@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section">
+        <h2>Transform Images into Sound</h2>
+        <p>Upload an image and convert its visual properties into an audio experience using different waveforms and scanning techniques.</p>
+    </div>
+
+    <div class="upload-section">
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="form-group">
+                <label for="image" class="file-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Choose Image File</span>
+                    <input type="file" id="image" name="image" accept=".png,.jpg,.jpeg,.bmp,.tiff" required>
+                </label>
+                <div class="file-info" id="file-info">No file selected</div>
+            </div>
+
+            <div class="parameters-grid">
+                <div class="form-group">
+                    <label for="duration">Duration (seconds)</label>
+                    <input type="number" id="duration" name="duration" min="0.1" max="60" step="0.1" value="5" required>
+                    <small>Length of the generated audio</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="base_freq">Base Frequency (Hz)</label>
+                    <input type="number" id="base_freq" name="base_freq" min="20" max="20000" step="1" value="220" required>
+                    <small>Starting frequency for sonification</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="waveform">Waveform Type</label>
+                    <select id="waveform" name="waveform" required>
+                        <option value="sine">Sine Wave</option>
+                        <option value="square">Square Wave</option>
+                        <option value="sawtooth">Sawtooth Wave</option>
+                        <option value="triangle">Triangle Wave</option>
+                        <option value="piano">Piano Notes</option>
+                    </select>
+                    <small>Type of audio waveform to generate</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="scan_type">Scan Direction</label>
+                    <select id="scan_type" name="scan_type" required>
+                        <option value="horizontal">Horizontal</option>
+                        <option value="vertical">Vertical</option>
+                    </select>
+                    <small>Direction to scan the image</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="max_size">Max Image Size</label>
+                    <input type="number" id="max_size" name="max_size" min="16" max="2048" step="16" value="512" required>
+                    <small>Maximum dimension for processing</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="reverb_strength">Reverb Strength</label>
+                    <input type="range" id="reverb_strength" name="reverb_strength" min="0" max="1" step="0.1" value="0">
+                    <div class="range-value">
+                        <span id="reverb_value">0.0</span>
+                    </div>
+                    <small>Amount of reverb effect</small>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-music"></i>
+                Generate Sonification
+            </button>
+        </form>
+    </div>
+
+    <div class="info-section">
+        <div class="info-card">
+            <i class="fas fa-info-circle"></i>
+            <h3>How It Works</h3>
+            <p>The application scans your image and converts brightness values into audio frequencies. Each pixel row or column contributes to the final sound composition.</p>
+        </div>
+        
+        <div class="info-card">
+            <i class="fas fa-sliders-h"></i>
+            <h3>Parameters Explained</h3>
+            <ul>
+                <li><strong>Duration:</strong> Length of generated audio</li>
+                <li><strong>Base Frequency:</strong> Starting pitch reference</li>
+                <li><strong>Waveform:</strong> Sound character type</li>
+                <li><strong>Scan Direction:</strong> Image reading direction</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

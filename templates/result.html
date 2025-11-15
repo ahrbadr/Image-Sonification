@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Sonification Result - Image Sonification{% endblock %}
+
+{% block content %}
+<div class="container result-container">
+    <div class="result-header">
+        <h2>Sonification Complete!</h2>
+        <a href="{{ url_for('index') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Create Another
+        </a>
+    </div>
+
+    <div class="result-content">
+        <div class="audio-section">
+            <h3>Generated Audio</h3>
+            <div class="audio-player">
+                <audio controls class="audio-element">
+                    <source src="{{ url_for('serve_static', filename=audio_file) }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-actions">
+                    <a href="{{ url_for('serve_static', filename=audio_file) }}" download class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download WAV
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="visualizations">
+            <div class="viz-card">
+                <h4>Scan Path Visualization</h4>
+                <img src="{{ url_for('serve_static', filename=scan_path_img) }}" 
+                     alt="Scan Path" class="viz-image">
+                <p>Red line shows the scanning path through the image</p>
+            </div>
+
+            <div class="viz-card">
+                <h4>Audio Waveform</h4>
+                <img src="{{ url_for('serve_static', filename=waveform_img) }}" 
+                     alt="Waveform" class="viz-image">
+                <p>Visual representation of the generated audio</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="technical-info">
+        <h4>Technical Details</h4>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <span class="tech-label">Audio Format:</span>
+                <span class="tech-value">WAV, 44.1kHz, 16-bit</span>
+            </div>
+            <div class="tech-item">
+                <span class="tech-label">File Size:</span>
+                <span class="tech-value" id="file-size">Calculating...</span>
+            </div>
+            <div class="tech-item">
+                <span class="tech-label">Processing Time:</span>
+                <span class="tech-value">Completed</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Calculate and display file size
+    document.addEventListener('DOMContentLoaded', function() {
+        const audioUrl = "{{ url_for('serve_static', filename=audio_file) }}";
+        fetch(audioUrl)
+            .then(response => {
+                const size = response.headers.get('content-length');
+                if (size) {
+                    const sizeMB = (size / (1024 * 1024)).toFixed(2);
+                    document.getElementById('file-size').textContent = sizeMB + ' MB';
+                }
+            })
+            .catch(() => {
+                document.getElementById('file-size').textContent = 'Unknown';
+            });
+    });
+</script>
+{% endblock %}
